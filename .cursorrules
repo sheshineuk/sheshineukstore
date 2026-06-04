@@ -1,0 +1,268 @@
+# SheShine — Cursor AI Rules
+# Shopify Dawn Theme Development
+# UK Women's Beauty & Personal Care Store
+
+## 🎯 PROJECT OVERVIEW
+You are building a professional, conversion-optimised Shopify storefront for **SheShine** — a UK-based women's beauty and personal care brand. The base theme is **Shopify Dawn**. Every file you create or edit must follow the rules below exactly.
+
+---
+
+## 🎨 BRAND IDENTITY — NEVER DEVIATE
+
+### Logo Colors (Extracted from actual logo)
+- "She" text color: `#CC92C5` (Light Mauve)
+- "shine" text color: `#674170` (Deep Plum)
+- Mid blend: `#AC7EA9`
+
+### Full Brand Palette
+```
+--color-primary:       #674170;   /* Deep Plum — main CTA, headings */
+--color-primary-dark:  #4a2e52;   /* Hover states */
+--color-secondary:     #AC7EA9;   /* Mid Mauve — accents, borders */
+--color-accent:        #CC92C5;   /* Light Mauve — badges, highlights */
+--color-soft:          #EDD9EB;   /* Very light lilac — section backgrounds */
+--color-bg:            #fdf7f5;   /* Off-white — page background */
+--color-white:         #ffffff;
+--color-text:          #1a1a1a;   /* Body text */
+--color-text-muted:    #6b6b6b;   /* Subtext */
+--color-border:        #e8d5e6;   /* Soft purple-toned border */
+```
+
+### Typography
+```
+Headings: "Cormorant Garamond", serif  — weights: 400, 600, 700
+Body:     "Montserrat", sans-serif     — weights: 400, 500, 600
+```
+- Import via Google Fonts in `layout/theme.liquid`
+- NEVER use system fonts, Inter, Roboto, or Arial
+
+### Button Style
+- Border-radius: `999px` (fully rounded pill shape)
+- Primary: `background: #674170`, `color: #ffffff`
+- Secondary: `background: transparent`, `border: 2px solid #674170`, `color: #674170`
+- Hover: scale(1.03) + slight shadow
+
+### Text on Colored Backgrounds
+- On `#CC92C5`, `#AC7EA9`, `#EDD9EB` backgrounds → use `#4a2e52` text (NEVER white)
+- On `#674170` background → use `#ffffff` text
+- On `#fdf7f5` background → use `#1a1a1a` text
+
+---
+
+## 🏗️ SHOPIFY DAWN THEME RULES
+
+### File Structure
+```
+assets/          → CSS, JS, images, fonts
+config/          → settings_schema.json, settings_data.json
+layout/          → theme.liquid (main wrapper)
+sections/        → .liquid section files
+snippets/        → reusable .liquid partials
+templates/       → JSON page templates
+locales/         → translation files
+```
+
+### Every Section File MUST Have:
+1. A complete `{% schema %}` block at the bottom with:
+   - `"name"` — human-readable section name
+   - `"settings"` array — all editable options (colors, text, images, toggles)
+   - `"presets"` — so it appears in Shopify Theme Customiser "Add Section"
+   - `"max_blocks"` if using blocks
+2. Shopify Customiser-editable options for ALL content (text, colors, images, toggle show/hide)
+3. Responsive design: mobile-first CSS
+
+### Liquid Best Practices
+- Use `{{ section.settings.SETTING_NAME }}` for all editable content
+- Images: always use `| image_url: width: 800` filter + `loading="lazy"`
+- Colors: use `{{ section.settings.bg_color }}` so merchant can edit in Customiser
+- NEVER hardcode text strings — always make them schema settings
+- Use `{% liquid %}` tag for multi-line logic
+- Prefix all section CSS classes with `sheshine-` to avoid Dawn conflicts
+
+### CSS Rules
+- Link `sheshine-global.css` in every section via `{{ 'sheshine-global.css' | asset_url | stylesheet_tag }}`
+- Use CSS custom properties (variables) for all colors — never hardcode hex values inline
+- Mobile breakpoint: `max-width: 768px`
+- Tablet breakpoint: `max-width: 1024px`
+
+---
+
+## ✨ ANIMATIONS — ALWAYS INCLUDE
+
+### Scroll Reveal (IntersectionObserver — NOT scroll event listener)
+```javascript
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('is-visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+```
+
+### CSS Animation Classes (in sheshine-global.css)
+```css
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+```
+
+### Performance Rules
+- All animations use ONLY `transform` and `opacity` (GPU composited — no layout thrash)
+- No `top/left/width/height` animations
+- IntersectionObserver always over scroll event listeners
+- Vanilla JS only — NO jQuery, NO external animation libraries
+
+---
+
+## 📐 LAYOUT & DESIGN SYSTEM
+
+### Section Spacing
+- Desktop padding: `80px 0`
+- Mobile padding: `48px 0`
+- Container max-width: `1280px`, centred with `margin: 0 auto`
+- Inner padding: `0 24px` (mobile), `0 48px` (tablet), `0 80px` (desktop)
+
+### Product Cards
+- Border-radius: `16px`
+- White background with subtle shadow on hover
+- Image ratio: always `aspect-ratio: 1/1` (square)
+- "SAVE X%" badge: `#674170` pill, white text, top-left
+- "NEW" badge: `#AC7EA9` pill, white text, top-left
+- Add to Cart button: full width, rounded pill, `#674170`
+- Hover: `transform: scale(1.02)`, shadow deepens — `transition: 0.3s ease`
+
+### Grid System
+- Product grids: 4 columns desktop / 2 columns mobile
+- `gap: 24px` desktop, `gap: 16px` mobile
+- Use CSS Grid: `grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))`
+
+### Marquee Strips
+- Duplicate content for seamless loop (2x content, animate -50%)
+- Edge fade: `mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)`
+- Always add `pause on hover`: `:hover .marquee-track { animation-play-state: paused; }`
+
+---
+
+## 🛍️ PRODUCTS & COLLECTIONS
+
+### 10 Core Products
+1. Flawless Facial Hair Remover ← HERO PRODUCT (lead ad product)
+2. Detangling Hair Brush
+3. Foot Pedicure Set
+4. Hair Turban Towel
+5. Hair Tinsel Extensions
+6. Heel Gel Silicone Protectors
+7. Heel Grip Pads
+8. Makeup Brush Set
+9. Cotton Moisturising Gloves
+10. Tongue Cleaner
+
+### Collections
+- `face-care` → Face Care
+- `hair-care` → Hair Care
+- `foot-body-care` → Foot & Body Care
+- `grooming-tools` → Grooming Tools
+- `best-sellers` → Best Sellers
+
+---
+
+## 📋 HOMEPAGE SECTIONS (Build in this order)
+
+1. `announcement-bar.liquid` — 3 USPs, burgundy bg, mobile rotation
+2. `header.liquid` — sticky, logo centre, nav links, cart/search icons
+3. `marquee-offers.liquid` — scrolling offers strip, `#AC7EA9` bg
+4. `hero-banner.liquid` — full-width, gradient bg, floating florals, staggered text reveal
+5. `brand-values-marquee.liquid` — `#674170` bg, white text, brand values
+6. `category-spotlight.liquid` — tabbed section, 5 collections
+7. `featured-collection.liquid` — Best Sellers (4 products)
+8. `featured-collection-2.liquid` — New Arrivals (4 products)
+9. `ugc-strip.liquid` — social proof photo grid
+10. `trust-badges.liquid` — 5 trust signals
+11. `reviews-carousel.liquid` — customer reviews, auto-advance
+12. `newsletter-banner.liquid` — gradient bg, email capture, 10% discount
+13. `footer.liquid` — 4-column, wave divider, social icons, payment icons
+
+---
+
+## ✅ SHOPIFY CUSTOMISER REQUIREMENTS
+
+Every section MUST be fully editable in Shopify Theme Customiser:
+- All text → `type: "text"` or `type: "richtext"` settings
+- All colors → `type: "color"` settings with brand defaults
+- All images → `type: "image_picker"` settings
+- Show/hide toggles → `type: "checkbox"` settings
+- Collection pickers → `type: "collection"` settings
+- Number inputs for limits → `type: "range"` settings
+
+Schema example for every section:
+```json
+{
+  "name": "Section Name",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Default Text" },
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#fdf7f5" },
+    { "type": "checkbox", "id": "show_section", "label": "Show section", "default": true }
+  ],
+  "presets": [{ "name": "Section Name" }]
+}
+```
+
+---
+
+## 🚫 NEVER DO THESE
+
+- Never use `!important` in CSS
+- Never hardcode product titles or prices — always use Liquid variables
+- Never use `document.write()`
+- Never use inline `style=""` for brand colors — use CSS variables
+- Never create sections without a `{% schema %}` block
+- Never use external CDN libraries (Shopify theme = no CDN access in liquid)
+- Never break mobile responsiveness
+- Never use `alert()` or `console.error()` in production code
+- Never write animations that animate `width`, `height`, `top`, `left`, `margin` (causes layout reflow)
+
+---
+
+## 💾 GIT COMMIT CONVENTION
+
+```
+feat: add [section-name] section
+fix: correct [issue] in [file]
+style: update brand colors in [file]
+refactor: improve [component] performance
+```
+
+Always commit after completing each section.
+
+---
+
+## 🔗 GITHUB REPO
+`https://github.com/sheshineuk/sheshineukstore.git`
+Branch: `main`
+
+After every major change:
+```bash
+git add .
+git commit -m "feat: [description]"
+git push origin main
+```
