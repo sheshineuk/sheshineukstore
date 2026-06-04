@@ -8,6 +8,10 @@
  * ------------------------------------------------------------
  */{
   "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {}
+    },
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
@@ -284,6 +288,7 @@
     }
   },
   "order": [
+    "announcement-bar",
     "hero_jVaWmY",
     "product_list_fa6P9H"
   ]

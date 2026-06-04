@@ -1,0 +1,203 @@
+/* =============================================
+   SHESHINE GLOBAL STYLES
+   UK Women's Beauty & Personal Care
+   ============================================= */
+
+/* --- CSS Variables --- */
+:root {
+  --sheshine-primary:       #674170;
+  --sheshine-primary-dark:  #4a2e52;
+  --sheshine-secondary:     #AC7EA9;
+  --sheshine-accent:        #CC92C5;
+  --sheshine-soft:          #EDD9EB;
+  --sheshine-bg:            #fdf7f5;
+  --sheshine-white:         #ffffff;
+  --sheshine-text:          #1a1a1a;
+  --sheshine-text-muted:    #6b6b6b;
+  --sheshine-border:        #e8d5e6;
+
+  --sheshine-font-heading:  'Cormorant Garamond', Georgia, serif;
+  --sheshine-font-body:     'Montserrat', Arial, sans-serif;
+
+  --sheshine-radius-sm:     8px;
+  --sheshine-radius-md:     16px;
+  --sheshine-radius-pill:   999px;
+
+  --sheshine-transition:    0.3s ease;
+}
+
+/* --- Base Resets --- */
+body {
+  font-family: var(--sheshine-font-body);
+  background-color: var(--sheshine-bg);
+  color: var(--sheshine-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--sheshine-font-heading);
+  color: var(--sheshine-primary);
+  line-height: 1.15;
+}
+
+/* --- Scroll Reveal Animation --- */
+.sheshine-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.sheshine-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Marquee Animation --- */
+@keyframes sheshine-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* --- Float Animation (hero florals) --- */
+@keyframes sheshine-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-14px) rotate(2deg); }
+}
+
+/* --- Shimmer (product card loading) --- */
+@keyframes sheshine-shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+/* --- Pulse (CTA button hover) --- */
+@keyframes sheshine-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(103, 65, 112, 0.4); }
+  70%  { box-shadow: 0 0 0 10px rgba(103, 65, 112, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(103, 65, 112, 0); }
+}
+
+/* --- Buttons --- */
+.sheshine-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  background: var(--sheshine-primary);
+  color: var(--sheshine-white) !important;
+  font-family: var(--sheshine-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: 2px solid var(--sheshine-primary);
+  border-radius: var(--sheshine-radius-pill);
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--sheshine-transition);
+}
+.sheshine-btn-primary:hover {
+  background: var(--sheshine-primary-dark);
+  border-color: var(--sheshine-primary-dark);
+  transform: scale(1.03);
+  animation: sheshine-pulse 1s ease-out infinite;
+}
+
+.sheshine-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--sheshine-primary) !important;
+  font-family: var(--sheshine-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: 2px solid var(--sheshine-primary);
+  border-radius: var(--sheshine-radius-pill);
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--sheshine-transition);
+}
+.sheshine-btn-secondary:hover {
+  background: var(--sheshine-soft);
+  transform: scale(1.03);
+}
+
+/* --- Section Container --- */
+.sheshine-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
+@media (max-width: 1024px) {
+  .sheshine-container { padding: 0 48px; }
+}
+@media (max-width: 768px) {
+  .sheshine-container { padding: 0 20px; }
+}
+
+/* --- Product Card --- */
+.sheshine-product-card {
+  background: var(--sheshine-white);
+  border-radius: var(--sheshine-radius-md);
+  overflow: hidden;
+  transition: transform var(--sheshine-transition),
+              box-shadow var(--sheshine-transition);
+  border: 1px solid var(--sheshine-border);
+}
+.sheshine-product-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(103, 65, 112, 0.15);
+}
+.sheshine-product-card__image {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  object-fit: cover;
+}
+.sheshine-product-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--sheshine-primary);
+  color: var(--sheshine-white);
+  font-family: var(--sheshine-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: var(--sheshine-radius-pill);
+}
+.sheshine-product-card__badge--new {
+  background: var(--sheshine-secondary);
+}
+
+/* --- Section Headings --- */
+.sheshine-section-tag {
+  display: block;
+  font-family: var(--sheshine-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sheshine-secondary);
+  margin-bottom: 8px;
+  text-align: center;
+}
+.sheshine-section-title {
+  font-family: var(--sheshine-font-heading);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 600;
+  color: var(--sheshine-primary);
+  text-align: center;
+  margin: 0 0 16px;
+}
+.sheshine-section-subtitle {
+  font-family: var(--sheshine-font-body);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--sheshine-text-muted);
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+}
