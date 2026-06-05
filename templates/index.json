@@ -88,6 +88,18 @@
         "padding-block-end": 72
       }
     },
+    "sheshine-marquee": {
+      "type": "sheshine-marquee",
+      "settings": {}
+    },
+    "sheshine-category-spotlight": {
+      "type": "sheshine-category-spotlight",
+      "settings": {}
+    },
+    "sheshine-best-sellers": {
+      "type": "sheshine-best-sellers",
+      "settings": {}
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -285,6 +297,9 @@
   },
   "order": [
     "hero_jVaWmY",
+    "sheshine-marquee",
+    "sheshine-category-spotlight",
+    "sheshine-best-sellers",
     "product_list_fa6P9H"
   ]
 }

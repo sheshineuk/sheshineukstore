@@ -201,3 +201,14 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto 48px;
   line-height: 1.7;
 }
+
+/* Scroll Reveal Observer — triggered by sheshine-animations.js */
+.sheshine-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.sheshine-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,113 @@
+{% comment %} SheShine — Scrolling Marquee Strip {% endcomment %}
+
+{% if section.settings.show_section %}
+<div class="sheshine-marquee-wrap"
+     style="background: {{ section.settings.bg_color }};">
+  <div class="sheshine-marquee-fade">
+    <div class="sheshine-marquee-track">
+      {%- assign items = section.settings.marquee_text | split: '|' -%}
+      {%- for i in (1..4) -%}
+        {%- for item in items -%}
+          <span class="sheshine-marquee-item">
+            <span class="sheshine-marquee-dot">✦</span>
+            <span style="color: {{ section.settings.text_color }};">{{ item | strip }}</span>
+          </span>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<style>
+.sheshine-marquee-wrap {
+  width: 100%;
+  overflow: hidden;
+  padding: 13px 0;
+  position: relative;
+}
+
+.sheshine-marquee-fade {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.sheshine-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: sheshine-marquee {{ section.settings.speed }}s linear infinite;
+  gap: 0;
+}
+
+.sheshine-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.sheshine-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  font-family: var(--sheshine-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sheshine-marquee-dot {
+  color: {{ section.settings.dot_color }};
+  font-size: 10px;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Scrolling Marquee",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Show marquee",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background colour",
+      "default": "#674170"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot colour",
+      "default": "#CC92C5"
+    },
+    {
+      "type": "textarea",
+      "id": "marquee_text",
+      "label": "Marquee items (separate with |)",
+      "default": "Premium Quality | Cruelty Free | Dermatologist Tested | Women-Founded | UK Loved | Vegan Friendly | Luxury Feels. Real Prices."
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll speed (seconds)",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 35
+    }
+  ],
+  "presets": [{ "name": "Scrolling Marquee" }]
+}
+{% endschema %}

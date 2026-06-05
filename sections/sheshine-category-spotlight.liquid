@@ -1,0 +1,316 @@
+{% comment %} SheShine — Category Spotlight Tabs {% endcomment %}
+
+{% if section.settings.show_section %}
+<section class="sheshine-catspot sheshine-reveal">
+  <div class="sheshine-container">
+
+    <div class="sheshine-catspot__header">
+      <span class="sheshine-section-tag">{{ section.settings.tag }}</span>
+      <h2 class="sheshine-section-title">{{ section.settings.heading }}</h2>
+    </div>
+
+    <!-- Tab Buttons -->
+    <div class="sheshine-catspot__tabs" role="tablist">
+      {%- for block in section.blocks -%}
+        <button
+          class="sheshine-catspot__tab {% if forloop.first %}active{% endif %}"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          data-tab="{{ forloop.index }}"
+          {{ block.shopify_attributes }}>
+          {{ block.settings.tab_label }}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <!-- Tab Panels -->
+    <div class="sheshine-catspot__panels">
+      {%- for block in section.blocks -%}
+        <div class="sheshine-catspot__panel {% if forloop.first %}active{% endif %}"
+             data-panel="{{ forloop.index }}"
+             role="tabpanel">
+          <div class="sheshine-catspot__panel-inner">
+
+            <!-- LEFT: Image -->
+            <div class="sheshine-catspot__image-wrap">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 600 }}"
+                     alt="{{ block.settings.tab_label }}"
+                     loading="lazy"
+                     class="sheshine-catspot__image">
+              {%- else -%}
+                <div class="sheshine-catspot__image-placeholder">
+                  <span>{{ block.settings.tab_label }}</span>
+                </div>
+              {%- endif -%}
+            </div>
+
+            <!-- RIGHT: Content -->
+            <div class="sheshine-catspot__content">
+              <span class="sheshine-catspot__content-tag">{{ block.settings.tab_label }}</span>
+              <h3 class="sheshine-catspot__content-title">{{ block.settings.title }}</h3>
+              <p class="sheshine-catspot__content-desc">{{ block.settings.description }}</p>
+              {%- if block.settings.collection != blank -%}
+                <a href="{{ block.settings.collection.url }}"
+                   class="sheshine-btn-primary">
+                  {{ block.settings.cta_text | default: 'Shop Now' }}
+                </a>
+              {%- else -%}
+                <a href="/collections/all" class="sheshine-btn-primary">
+                  {{ block.settings.cta_text | default: 'Shop Now' }}
+                </a>
+              {%- endif -%}
+            </div>
+
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+{% endif %}
+
+<style>
+.sheshine-catspot {
+  padding: 80px 0;
+  background: var(--sheshine-bg);
+}
+
+.sheshine-catspot__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Tabs */
+.sheshine-catspot__tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.sheshine-catspot__tab {
+  padding: 10px 24px;
+  font-family: var(--sheshine-font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: 2px solid var(--sheshine-border);
+  border-radius: var(--sheshine-radius-pill);
+  background: var(--sheshine-white);
+  color: var(--sheshine-text-muted);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sheshine-catspot__tab:hover {
+  border-color: var(--sheshine-secondary);
+  color: var(--sheshine-primary);
+}
+
+.sheshine-catspot__tab.active {
+  background: var(--sheshine-primary);
+  border-color: var(--sheshine-primary);
+  color: var(--sheshine-white);
+}
+
+/* Panels */
+.sheshine-catspot__panel {
+  display: none;
+  animation: sheshine-tab-in 0.3s ease;
+}
+
+.sheshine-catspot__panel.active {
+  display: block;
+}
+
+@keyframes sheshine-tab-in {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.sheshine-catspot__panel-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Image */
+.sheshine-catspot__image-wrap {
+  border-radius: var(--sheshine-radius-md);
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: var(--sheshine-soft);
+}
+
+.sheshine-catspot__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.sheshine-catspot__image:hover {
+  transform: scale(1.04);
+}
+
+.sheshine-catspot__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--sheshine-soft), var(--sheshine-accent));
+  font-family: var(--sheshine-font-heading);
+  font-size: 28px;
+  color: var(--sheshine-primary);
+  font-style: italic;
+}
+
+/* Content */
+.sheshine-catspot__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sheshine-catspot__content-tag {
+  font-family: var(--sheshine-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sheshine-secondary);
+}
+
+.sheshine-catspot__content-title {
+  font-family: var(--sheshine-font-heading);
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 600;
+  color: var(--sheshine-primary);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.sheshine-catspot__content-desc {
+  font-family: var(--sheshine-font-body);
+  font-size: 15px;
+  color: var(--sheshine-text-muted);
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sheshine-catspot { padding: 48px 0; }
+  .sheshine-catspot__panel-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .sheshine-catspot__tabs { gap: 8px; }
+  .sheshine-catspot__tab { padding: 8px 16px; font-size: 12px; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabs = document.querySelectorAll('.sheshine-catspot__tab');
+  const panels = document.querySelectorAll('.sheshine-catspot__panel');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      const index = this.dataset.tab;
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      panels.forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      this.setAttribute('aria-selected','true');
+      document.querySelector('.sheshine-catspot__panel[data-panel="' + index + '"]').classList.add('active');
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Category Spotlight",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Show section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Tag line above heading",
+      "default": "Explore"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Shop by Category"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab button label",
+          "default": "Face Care"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category title",
+          "default": "Glow Up Your Skincare Routine"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Discover our range of face care tools designed to give you salon-quality results at home."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Link to collection"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button text",
+          "default": "Shop Face Care"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Category Spotlight",
+      "blocks": [
+        { "type": "category", "settings": { "tab_label": "Face Care", "title": "Glow Up Your Routine", "description": "Premium face tools for smooth, radiant skin every day.", "cta_text": "Shop Face Care" }},
+        { "type": "category", "settings": { "tab_label": "Hair Care", "title": "Your Best Hair Days", "description": "From detangling to styling — everything your hair deserves.", "cta_text": "Shop Hair Care" }},
+        { "type": "category", "settings": { "tab_label": "Foot & Body", "title": "Head to Toe Beautiful", "description": "Treat your feet and body to the care they deserve.", "cta_text": "Shop Foot & Body" }},
+        { "type": "category", "settings": { "tab_label": "Grooming Tools", "title": "Precision Beauty Tools", "description": "Professional-grade grooming tools for your everyday routine.", "cta_text": "Shop Grooming" }},
+        { "type": "category", "settings": { "tab_label": "Best Sellers", "title": "UK Women Love These", "description": "Our most-loved products — tried, tested and trusted.", "cta_text": "Shop Best Sellers" }}
+      ]
+    }
+  ]
+}
+{% endschema %}
